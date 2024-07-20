@@ -1,14 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import MessageList from './components/MessageList';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const messages = ["Hello world", "how's the weather"];
 
   return (
     <>
-      <p>hello world</p>
+      <div className='p-2'>
+        <MessageList
+          messageArr={messages}
+        />
+      </div>
     </>
   )
 }
