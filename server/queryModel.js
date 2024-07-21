@@ -9,7 +9,7 @@
 //     port: process.env.DB_PORT,
 // });
 
-import pool from './db_pool';
+const pool = require('./db_pool');
 console.log(pool);
 
 const getQueries = async () => {
