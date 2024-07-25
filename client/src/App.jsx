@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import MessageList from './components/MessageList';
-import { createQuery } from './modules/query-model'
+import { getQueries, createQuery } from './modules/query-model'
 
 function App() {
   const [query, setQuery] = useState("");
@@ -15,24 +15,15 @@ function App() {
     }
   }
 
-  const getQueries = async () => {
-    try {
-      const res = await fetch("http://localhost:4000/queries");
-      const jsonData = await res.json();
-
-      setQueryArr(jsonData.rows);
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
   useEffect(() => {
     console.log("useEffect");
-    getQueries();
 
-    // const queryData = getQueries();
-    // console.log("querydata", queryData)
-    // setQueryArr(queryData);
+    const fetchQueries = async () => {
+      const jsonData = await getQueries();
+      setQueryArr(jsonData.rows);
+    };
+
+    fetchQueries();
   }, []);
 
   return (

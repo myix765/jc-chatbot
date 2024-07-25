@@ -1,17 +1,17 @@
 
 const apiUrl = "http://localhost:4000/queries"; // probably change to not be hardcoded here, put in .env?
 
-// const getQueries = async () => {
-//     try {
-//         const res = await fetch(apiUrl);
-//         const jsonData = await res.json();
+const getQueries = async () => {
+    try {
+        const res = await fetch(apiUrl);
+        const jsonData = await res.json();
 
-//         console.log(jsonData);
-//         return jsonData;
-//     } catch (error) {
-//         console.error(error.message);
-//     }
-// }
+        return jsonData;
+    } catch (error) {
+        console.error(error.message);
+        return { rows: [] };
+    }
+}
 
 const createQuery = async (query) => {
     try {
@@ -32,6 +32,6 @@ const createQuery = async (query) => {
 }
 
 export {
-    // getQueries,
+    getQueries,
     createQuery,
 }
