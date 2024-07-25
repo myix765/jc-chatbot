@@ -24,8 +24,8 @@ app.get('/queries', async (req, res) => {
         );
 
         res.json(allQueries);
-    } catch (e) {
-        console.error(e.message);
+    } catch (error) {
+        console.error(error.message);
     }
 })
 
@@ -40,8 +40,8 @@ app.post('/queries', async (req, res) => {
         );
 
         res.json(newQuery);
-    } catch (e) {
-        console.error(e.message);
+    } catch (error) {
+        console.error(error.message);
     }
 })
 
@@ -54,7 +54,7 @@ app.delete('/queries', async (req, res) => {
         )
 
         res.json(deleteQueries);
-    } catch (e) {
-        console.error(e.message);
+    } catch (error) {
+        console.error(error.message);
     }
 })
