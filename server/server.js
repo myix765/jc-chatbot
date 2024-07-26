@@ -13,15 +13,10 @@ app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 })
 
-// ENDPOINTS FOR QUERIES
-
-// get all queries
+// get all query-response pairs
 app.get('/queries', async (req, res) => {
     try {
-        const sqlQuery = "SELECT * FROM queries";
-        const allQueries = await pool.query(
-            sqlQuery
-        );
+        const allQueries = await pool.query("SELECT * FROM queries");
 
         res.json(allQueries);
     } catch (error) {
@@ -29,17 +24,55 @@ app.get('/queries', async (req, res) => {
     }
 })
 
-// insert query
+// insert query and AI response
 app.post('/queries', async (req, res) => {
     try {
+        // insert query into database
         const { query } = req.body;
-        const sqlQuery = `INSERT INTO queries (query) VALUES ($1) RETURNING *`;
         const newQuery = await pool.query(
-            sqlQuery,
+            `INSERT INTO queries (query) VALUES ($1) RETURNING *`,
             [query]
         );
 
-        res.json(newQuery);
+        // get JWT
+        const loginJwt = await getJwt();
+        console.log("loginJwt:", loginJwt);
+
+        // get AI response from query
+        const fetchResponse = await fetch("https://tl-onboarding-project-dxm7krgnwa-uc.a.run.app/prompt", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${loginJwt}`
+            },
+            body: JSON.stringify({
+                model: "gpt-4o",
+                messages: [{ role: "user", content: query }]
+            })
+        })
+        const responseJson = await fetchResponse.json();
+
+        console.log("AI message:", responseJson.message.content);
+
+        // insert AI response into database
+        const newResponse = await pool.query(
+            'INSERT INTO responses (response) VALUES ($1) RETURNING *',
+            [responseJson.message.content]
+        )
+
+        const queryId = newQuery.rows[0].id;
+        const responseId = newResponse.rows[0].id;
+        // insert into assignment table
+        const newAssignment = await pool.query(
+            'INSERT INTO query_response (query_id, response_id) VALUES ($1, $2) RETURNING *',
+            [queryId, responseId]
+        )
+
+        const data = {
+            queriesRes: newQuery,
+            responseRes: newResponse,
+            assignmentRes: newAssignment
+        }
+        res.json(data);
     } catch (error) {
         console.error(error.message);
     }
@@ -58,3 +91,37 @@ app.delete('/queries', async (req, res) => {
         console.error(error.message);
     }
 })
+
+// app.post('/auth', async (req, res) => {
+//     try {
+//         const loginRes = await fetch("https://tl-onboarding-project-dxm7krgnwa-uc.a.run.app/login", {
+//             method: "POST",
+//             body: JSON.stringify({
+//                 username: "megan",
+//                 password: "Opportunity-Split5-Certainly"
+//             })
+//         });
+
+//         const loginResJson = await loginRes.json();
+//         res.json(loginResJson);
+//     } catch (error) {
+//         console.error(error.message)
+//     }
+// })
+
+const getJwt = async () => {
+    try {
+        const res = await fetch("https://tl-onboarding-project-dxm7krgnwa-uc.a.run.app/login", {
+            method: "POST",
+            body: JSON.stringify({
+                username: "megan",
+                password: "Opportunity-Split5-Certainly"
+            })
+        });
+
+        const jsonData = await res.json();
+        return jsonData.token;
+    } catch (error) {
+        console.error(error.message);
+    }
+}
