@@ -14,11 +14,41 @@ app.listen(PORT, () => {
 })
 
 // get all query-response pairs
+app.get('/assignments', async (req, res) => {
+    try {
+        const allAssignments = await pool.query("SELECT * FROM query_response");
+
+        res.json(allAssignments);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+// get query
 app.get('/queries', async (req, res) => {
     try {
-        const allQueries = await pool.query("SELECT * FROM queries");
+        const id = req.query.id;
+        const queryRes = await pool.query(
+            "SELECT * FROM queries WHERE id = ($1)",
+            [id]
+        );
 
-        res.json(allQueries);
+        res.json(queryRes);
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+// get response
+app.get('/responses', async (req, res) => {
+    try {
+        const id = req.query.id;
+        const responseRes = await pool.query(
+            "SELECT * FROM responses WHERE id = ($1)",
+            [id]
+        );
+
+        res.json(responseRes);
     } catch (error) {
         console.error(error.message);
     }
@@ -36,7 +66,6 @@ app.post('/queries', async (req, res) => {
 
         // get JWT
         const loginJwt = await getJwt();
-        console.log("loginJwt:", loginJwt);
 
         // get AI response from query
         const fetchResponse = await fetch("https://tl-onboarding-project-dxm7krgnwa-uc.a.run.app/prompt", {
@@ -50,8 +79,6 @@ app.post('/queries', async (req, res) => {
             })
         })
         const responseJson = await fetchResponse.json();
-
-        console.log("AI message:", responseJson.message.content);
 
         // insert AI response into database
         const newResponse = await pool.query(

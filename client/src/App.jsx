@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import MessageList from './components/MessageList';
-import { getQueries, createQuery } from './api/query-wrapper'
+import { getAssignments, createQuery } from './api/query-wrapper'
 
 function App() {
   const [query, setQuery] = useState("");
@@ -19,8 +19,9 @@ function App() {
     console.log("useEffect");
 
     const fetchQueries = async () => {
-      const jsonData = await getQueries();
-      setQueryArr(jsonData.rows);
+      const assignmentsArr = await getAssignments();
+      setQueryArr(assignmentsArr);
+      // window.location = '/';
     };
 
     fetchQueries();
