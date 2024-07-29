@@ -72,9 +72,21 @@ const createQuery = async (query) => {
     }
 }
 
+const deleteAll = async () => {
+    try {
+        await fetch(apiUrl("queries"), {
+            method: "DELETE"
+        });
+        window.location = '/'; // not working
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
 export {
     getAssignments,
     getQuery,
     getResponse,
     createQuery,
+    deleteAll
 }

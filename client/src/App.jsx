@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import MessageList from './components/MessageList';
-import { getAssignments, createQuery } from './api/query-wrapper'
+import { getAssignments, createQuery, deleteAll } from './api/query-wrapper'
 
 function App() {
   const [query, setQuery] = useState("");
@@ -52,6 +52,7 @@ function App() {
               Submit
             </button>
           </form>
+          <button onClick={deleteAll}>Delete</button>
         </div>
       </div>
     </>

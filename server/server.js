@@ -75,7 +75,10 @@ app.post('/queries', async (req, res) => {
             },
             body: JSON.stringify({
                 model: "gpt-4o",
-                messages: [{ role: "user", content: query }]
+                messages: [
+                    { role: "system", "content": "Today is opposite day." },
+                    { role: "user", content: query }
+                ]
             })
         })
         const responseJson = await fetchResponse.json();
@@ -105,15 +108,12 @@ app.post('/queries', async (req, res) => {
     }
 })
 
-// delete all queries
+// clear all tables
 app.delete('/queries', async (req, res) => {
     try {
-        const sqlQuery = "DELETE FROM queries";
-        const deleteQueries = await pool.query(
-            sqlQuery
-        )
-
-        res.json(deleteQueries);
+        await pool.query("DELETE FROM queries");
+        await pool.query("DELETE FROM query_response");
+        await pool.query("DELETE FROM responses");
     } catch (error) {
         console.error(error.message);
     }

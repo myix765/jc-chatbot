@@ -9,9 +9,7 @@ const MessageBlock = ({ message, isQuery }) => {
     }
 
     return (
-        <div className={`border-2 rounded-lg p-1 w-[70%] ${styleModifier}`}>
-            <p>{message}</p>
-        </div>
+        <p className={`border-2 rounded-lg p-1 w-[70%] ${styleModifier}`}>{message}</p>
     )
 }
 
