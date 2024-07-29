@@ -141,8 +141,8 @@ const getJwt = async () => {
         const res = await fetch("https://tl-onboarding-project-dxm7krgnwa-uc.a.run.app/login", {
             method: "POST",
             body: JSON.stringify({
-                username: "megan",
-                password: "Opportunity-Split5-Certainly"
+                username: process.env.AUTH_USER,
+                password: process.env.AUTH_PASS
             })
         });
 
