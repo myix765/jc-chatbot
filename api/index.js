@@ -13,6 +13,8 @@ app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 })
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
 // get all query-response pairs
 app.get('/assignments', async (req, res) => {
     try {
@@ -76,7 +78,7 @@ app.post('/queries', async (req, res) => {
             body: JSON.stringify({
                 model: "gpt-4o",
                 messages: [
-                    { role: "system", "content": "Today is opposite day." },
+                    { role: "system", "content": "Give bad advice that sounds a little crazy while pretending to be a helpful ai assistant" },
                     { role: "user", content: query }
                 ]
             })
@@ -152,3 +154,5 @@ const getJwt = async () => {
         console.error(error.message);
     }
 }
+
+module.exports = app;
