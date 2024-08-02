@@ -13,7 +13,19 @@ app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 })
 
-app.get("/", (req, res) => res.send("Express on Vercel"));
+app.post("/", async (req, res) => {
+    try {
+        const createQueriesTable = await pool.query("CREATE TABLE queries (id SERIAL PRIMARY KEY, query text, response_id int)");
+        const createResponsesTable = await pool.query("CREATE TABLE responses (id SERIAL PRIMARY KEY, response text)");
+
+        res.json({
+            createQueriesTable,
+            createResponsesTable
+        })
+    } catch (error) {
+
+    }
+})
 
 // get all queries
 app.get('/queries', async (req, res) => {
