@@ -15,10 +15,10 @@ app.listen(PORT, () => {
 
 app.get("/", (req, res) => res.send("Express on Vercel"));
 
-// get all query-response pairs
-app.get('/assignments', async (req, res) => {
+// get all queries
+app.get('/queries', async (req, res) => {
     try {
-        const allAssignments = await pool.query("SELECT * FROM query_response");
+        const allAssignments = await pool.query("SELECT * FROM queries");
 
         res.json(allAssignments);
     } catch (error) {
@@ -27,19 +27,19 @@ app.get('/assignments', async (req, res) => {
 })
 
 // get query
-app.get('/queries', async (req, res) => {
-    try {
-        const id = req.query.id;
-        const queryRes = await pool.query(
-            "SELECT * FROM queries WHERE id = ($1)",
-            [id]
-        );
+// app.get('/queries', async (req, res) => {
+//     try {
+//         const id = req.query.id;
+//         const queryRes = await pool.query(
+//             "SELECT * FROM queries WHERE id = ($1)",
+//             [id]
+//         );
 
-        res.json(queryRes);
-    } catch (error) {
-        console.error(error.message);
-    }
-})
+//         res.json(queryRes);
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+// })
 
 // get response
 app.get('/responses', async (req, res) => {
@@ -59,12 +59,7 @@ app.get('/responses', async (req, res) => {
 // insert query and AI response
 app.post('/queries', async (req, res) => {
     try {
-        // insert query into database
         const { query } = req.body;
-        const newQuery = await pool.query(
-            `INSERT INTO queries (query) VALUES ($1) RETURNING *`,
-            [query]
-        );
 
         // get JWT
         const loginJwt = await getJwt();
@@ -91,18 +86,16 @@ app.post('/queries', async (req, res) => {
             [responseJson.message.content]
         )
 
-        const queryId = newQuery.rows[0].id;
         const responseId = newResponse.rows[0].id;
-        // insert into assignment table
-        const newAssignment = await pool.query(
-            'INSERT INTO query_response (query_id, response_id) VALUES ($1, $2) RETURNING *',
-            [queryId, responseId]
+        // insert into query table
+        const newQuery = await pool.query(
+            'INSERT INTO queries (query, response_id) VALUES ($1, $2) RETURNING *',
+            [query, responseId]
         )
 
         const data = {
             queriesRes: newQuery,
-            responseRes: newResponse,
-            assignmentRes: newAssignment
+            responseRes: newResponse
         }
         res.json(data);
     } catch (error) {
@@ -114,29 +107,11 @@ app.post('/queries', async (req, res) => {
 app.delete('/queries', async (req, res) => {
     try {
         await pool.query("DELETE FROM queries");
-        await pool.query("DELETE FROM query_response");
         await pool.query("DELETE FROM responses");
     } catch (error) {
         console.error(error.message);
     }
 })
-
-// app.post('/auth', async (req, res) => {
-//     try {
-//         const loginRes = await fetch("https://tl-onboarding-project-dxm7krgnwa-uc.a.run.app/login", {
-//             method: "POST",
-//             body: JSON.stringify({
-//                 username: "megan",
-//                 password: "Opportunity-Split5-Certainly"
-//             })
-//         });
-
-//         const loginResJson = await loginRes.json();
-//         res.json(loginResJson);
-//     } catch (error) {
-//         console.error(error.message)
-//     }
-// })
 
 const getJwt = async () => {
     try {
