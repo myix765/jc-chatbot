@@ -1,47 +1,46 @@
 
 const apiUrl = (endpoint) => `http://localhost:4000/${endpoint}`;
 
-// const getAssignments = async () => {
-//     try {
-//         const res = await fetch(apiUrl("assignments"));
-//         const jsonData = await res.json();
+const getPairs = async () => {
+    try {
+        const res = await fetch(apiUrl("queries"));
+        const jsonData = await res.json();
 
-//         const assignmentsPromises = jsonData.rows.map(async (assignment) => {
-//             const queryRes = await getQuery(assignment.query_id);
-//             const responseRes = await getResponse(assignment.response_id);
-//             console.log("queryRes:", queryRes);
+        const queryPromises = jsonData.rows.map(async (queryData) => {
+            const responseRes = await getResponse(queryData.response_id);
+            console.log("responseRes:", responseRes);
 
-//             const query = queryRes.rows[0].query;
-//             const response = responseRes.rows[0].response;
-//             console.log("query:", query);
+            const query = queryData.query;
+            const response = responseRes.rows[0].response;
+            console.log("query:", query);
 
-//             return {
-//                 query,
-//                 response
-//             }
-//         })
+            return {
+                query,
+                response
+            }
+        })
 
-//         const assignmentsArr = await Promise.all(assignmentsPromises);
-//         console.log("assignmentsArr", assignmentsArr)
+        const pairArr = await Promise.all(queryPromises);
+        console.log("pairArrArr", pairArr)
 
-//         return assignmentsArr;
-//     } catch (error) {
-//         console.error(error.message);
-//         return { rows: [] };
-//     }
-// }
+        return pairArr;
+    } catch (error) {
+        console.error(error.message);
+        return { rows: [] };
+    }
+}
 
-// const getQuery = async (queryId) => {
-//     try {
-//         console.log("query apiUrl:", apiUrl(`queries?id=${queryId}`));
-//         const res = await fetch(apiUrl(`queries?id=${queryId}`));
-//         const jsonData = await res.json();
+const getQuery = async (queryId) => {
+    try {
+        console.log("query apiUrl:", apiUrl(`queries?id=${queryId}`));
+        const res = await fetch(apiUrl(`queries?id=${queryId}`));
+        const jsonData = await res.json();
 
-//         return jsonData;
-//     } catch (error) {
-//         console.error(error.message);
-//     }
-// }
+        return jsonData;
+    } catch (error) {
+        console.error(error.message);
+    }
+}
 
 const getResponse = async (responseId) => {
     try {
@@ -84,9 +83,9 @@ const deleteAll = async () => {
 }
 
 export {
-    getAssignments,
     getQuery,
     getResponse,
+    getPairs,
     createQuery,
     deleteAll
 }
