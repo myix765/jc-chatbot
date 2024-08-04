@@ -52,7 +52,7 @@ function App() {
               Submit
             </button>
           </form>
-          <button onClick={deleteAll}>Delete</button>
+          <button onClick={deleteAll}>Clear</button>
         </div>
       </div>
     </>

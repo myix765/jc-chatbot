@@ -1,5 +1,5 @@
 
-const apiUrl = (endpoint) => `http://localhost:4000/${endpoint}`;
+const apiUrl = (endpoint) => `/api/${endpoint}`;
 
 const getPairs = async () => {
     try {
@@ -32,7 +32,6 @@ const getPairs = async () => {
 
 const getQuery = async (queryId) => {
     try {
-        console.log("query apiUrl:", apiUrl(`queries?id=${queryId}`));
         const res = await fetch(apiUrl(`queries?id=${queryId}`));
         const jsonData = await res.json();
 
