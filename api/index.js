@@ -3,12 +3,12 @@ const cors = require('cors');
 require('dotenv').config();
 const pool = require('./db_pool');
 
-const app = express();
-const PORT = process.env.PORT;
-
-app.use(express.json());
 app.use(cors());
 
+const app = express();
+app.use(express.json());
+
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 })
@@ -23,7 +23,7 @@ app.post("/", async (req, res) => {
             createResponsesTable
         })
     } catch (error) {
-
+        console.error(error.message);
     }
 })
 
