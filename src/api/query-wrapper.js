@@ -1,5 +1,5 @@
 
-const apiUrl = (endpoint) => `/api/${endpoint}`;
+const apiUrl = (endpoint) => `/${endpoint}`;
 
 const createTables = async () => {
     try {
