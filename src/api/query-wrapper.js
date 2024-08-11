@@ -1,5 +1,5 @@
 
-const apiUrl = (endpoint) => `https://jc-chatbot.vercel.app/api/${endpoint}`;
+const apiUrl = (endpoint) => `/api/${endpoint}`;
 
 const createTables = async () => {
     try {
