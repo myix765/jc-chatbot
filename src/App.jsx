@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import MessageList from './components/MessageList';
-import { getPairs, createQuery, deleteAll } from './api/query-wrapper'
+import { createTables, getPairs, createQuery, deleteAll } from './api/query-wrapper'
 
 function App() {
   const [query, setQuery] = useState("");
@@ -18,13 +18,14 @@ function App() {
   useEffect(() => {
     console.log("useEffect");
 
-    const fetchQueries = async () => {
+    const init = async () => {
+      await createTables();
       const assignmentsArr = await getPairs();
       setQueryArr(assignmentsArr);
       // window.location = '/';
     };
 
-    fetchQueries();
+    init();
   }, []);
 
   return (

@@ -1,5 +1,17 @@
 
-const apiUrl = (endpoint) => `/api/${endpoint}`;
+const apiUrl = (endpoint) => `https://jc-chatbot.vercel.app/api/${endpoint}`;
+
+const createTables = async () => {
+    try {
+        const res = await fetch(apiUrl("tables"), {
+            method: "POST"
+        });
+        const jsonData = await res.json();
+        return jsonData;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 const getPairs = async () => {
     try {
@@ -30,16 +42,16 @@ const getPairs = async () => {
     }
 }
 
-const getQuery = async (queryId) => {
-    try {
-        const res = await fetch(apiUrl(`queries?id=${queryId}`));
-        const jsonData = await res.json();
+// const getQuery = async (queryId) => {
+//     try {
+//         const res = await fetch(apiUrl(`queries?id=${queryId}`));
+//         const jsonData = await res.json();
 
-        return jsonData;
-    } catch (error) {
-        console.error(error.message);
-    }
-}
+//         return jsonData;
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+// }
 
 const getResponse = async (responseId) => {
     try {
@@ -82,8 +94,7 @@ const deleteAll = async () => {
 }
 
 export {
-    getQuery,
-    getResponse,
+    createTables,
     getPairs,
     createQuery,
     deleteAll
