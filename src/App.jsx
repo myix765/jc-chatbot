@@ -6,11 +6,14 @@ import { createTables, getPairs, createQuery, deleteAll } from './api/query-wrap
 function App() {
   const [query, setQuery] = useState("");
   const [queryArr, setQueryArr] = useState([]);
+  const [responseArr, setReponseArr] = useState([]);
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (query != "") {    // handle case when query is only whitespace and message height is 0
-      createQuery(query);
+      setQueryArr([...queryArr, query]);
+      const res = createQuery(query);
+      
       setQuery("");
     }
   }
@@ -21,8 +24,11 @@ function App() {
     const init = async () => {
       await createTables();
       const assignmentsArr = await getPairs();
-      setQueryArr(assignmentsArr);
-      // window.location = '/';
+      assignmentsArr.map(assignmentsObj => {
+        setQueryArr(q => [...q, assignmentsObj.query]);
+        setReponseArr(r => [...r, assignmentsObj.response]);
+      })
+      // setQueryArr(assignmentsArr);
     };
 
     init();
@@ -33,7 +39,9 @@ function App() {
       <div>
         <div className='w-full p-2'>
           <MessageList
-            messageArr={queryArr}
+            queryArr={queryArr}
+            responseArr={responseArr}
+            // messageArr={queryArr}
           />
         </div>
         <div className='fixed bottom-0 w-full px-2 pb-3 pt-2 bg-slate-300'>

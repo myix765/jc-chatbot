@@ -75,8 +75,10 @@ const createQuery = async (query) => {
             body: JSON.stringify(body)
         });
 
-        console.log(res);
-        window.location = '/';
+        const jsonData = await res.json();
+        console.log("createQuery:", jsonData);
+        return jsonData;
+        // window.location = '/';
     } catch (error) {
         console.error(error.message);
     }
@@ -87,7 +89,7 @@ const deleteAll = async () => {
         await fetch(apiUrl("queries"), {
             method: "DELETE"
         });
-        window.location = '/'; // not working
+        // window.location = '/'; // not working
     } catch (error) {
         console.error(error.message);
     }
@@ -96,6 +98,7 @@ const deleteAll = async () => {
 export {
     createTables,
     getPairs,
+    getResponse,
     createQuery,
     deleteAll
 }

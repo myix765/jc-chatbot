@@ -1,24 +1,23 @@
+import React from 'react';
 import MessageBlock from "./MessageBlock";
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-const MessageList = ({ messageArr }) => {
+const MessageList = ({ queryArr, responseArr }) => {
     return (
         <div className="flex flex-col gap-2 w-full">
-            {messageArr.map((messageObj, id) => {
-                console.log("messageObj:", messageObj);
+            {queryArr.map((query, id) => {
+                console.log("query:", query);
                 return (
-                    <>
+                    <React.Fragment key={id}>
                         <MessageBlock
-                            // key={id}
-                            message={messageObj.query}
+                            message={query}
                             isQuery={true}
                         />
-                        <MessageBlock
-                            // key={id}
-                            message={messageObj.response}
+                        {responseArr[id] && <MessageBlock
+                            message={responseArr[id]}
                             isQuery={false}
-                        />
-                    </>
+                        />}
+                    </React.Fragment>
                 )
             })}
         </div>
@@ -26,7 +25,8 @@ const MessageList = ({ messageArr }) => {
 }
 
 MessageList.propTypes = {
-    messageArr: PropTypes.arrayOf(PropTypes.object).isRequired,
+    queryArr: PropTypes.arrayOf(PropTypes.object).isRequired,
+    responseArr: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 
 export default MessageList;
