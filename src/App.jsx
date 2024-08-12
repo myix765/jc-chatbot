@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import './App.css'
 import MessageList from './components/MessageList';
 import { createTables, getPairs, createQuery, deleteAll } from './api/query-wrapper'
-import { set } from '../app';
 
 function App() {
   const [query, setQuery] = useState("");
