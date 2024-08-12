@@ -18,6 +18,7 @@ const getPairs = async () => {
         const res = await fetch(apiUrl("queries"));
         const jsonData = await res.json();
 
+        // for every query get the corresponding response
         const queryPromises = jsonData.rows.map(async (queryData) => {
             const responseRes = await getResponse(queryData.response_id);
             console.log("responseRes:", responseRes);

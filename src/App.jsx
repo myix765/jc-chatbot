@@ -2,20 +2,28 @@ import { useEffect, useState } from 'react';
 import './App.css'
 import MessageList from './components/MessageList';
 import { createTables, getPairs, createQuery, deleteAll } from './api/query-wrapper'
+import { set } from '../app';
 
 function App() {
   const [query, setQuery] = useState("");
   const [queryArr, setQueryArr] = useState([]);
   const [responseArr, setReponseArr] = useState([]);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (query != "") {    // handle case when query is only whitespace and message height is 0
       setQueryArr([...queryArr, query]);
-      const res = createQuery(query);
-      
+      const res = await createQuery(query);
+      setReponseArr([...responseArr, res.responseRes.rows[0].response]);
+      console.log("res response:", res.responseRes.rows[0].response);
       setQuery("");
     }
+  }
+
+  const onDelete = async () => {
+    setQueryArr([]);
+    setReponseArr([]);
+    await deleteAll();
   }
 
   useEffect(() => {
@@ -61,7 +69,7 @@ function App() {
               Submit
             </button>
           </form>
-          <button onClick={deleteAll}>Clear</button>
+          <button onClick={onDelete}>Clear</button>
         </div>
       </div>
     </>
