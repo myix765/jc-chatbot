@@ -51,7 +51,7 @@ function App() {
         </div>
         <div className='h-[15%] fixed bottom-10 w-full bg-gradient-to-t from-offblack via-offblack to-transparent'></div>
         <div className='w-[96%] h-28 px-2 pb-8 pt-4 font-inconsolata z-20'>
-          <form className='bottom-0 flex gap-3' onSubmit={onSubmit}>
+          <form className='bottom-0 flex gap-3' onSubmit={onSubmit} autoComplete='off'>
             <input
               type='text'
               id='query-input'
