@@ -105,7 +105,7 @@ app.post('/queries', async (req, res) => {
         // insert into query table
         const newQuery = await pool.query(
             'INSERT INTO queries (query, response) VALUES ($1, $2) RETURNING *',
-            [query, responseJson.rows[0].response]
+            [query, responseJson.message.content]
         )
 
         // const data = {
