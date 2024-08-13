@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import MessageList from './components/MessageList';
-import { createTables, getPairs, createQuery, deleteAll } from './api/query-wrapper'
+import { createTables, getAllQueries, createQuery, deleteAll } from './api/query-wrapper'
 
 function App() {
   const [query, setQuery] = useState("");
@@ -11,11 +11,12 @@ function App() {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (query != "") {    // handle case when query is only whitespace and message height is 0
-      setQueryArr([...queryArr, query]);
-      const res = await createQuery(query);
+      const queryTemp = query;
+      setQuery("");
+      setQueryArr([...queryArr, queryTemp]);
+      const res = await createQuery(queryTemp);
       setReponseArr([...responseArr, res.responseRes.rows[0].response]);
       // console.log("res response:", res.responseRes.rows[0].response);
-      setQuery("");
     }
   }
 
@@ -30,10 +31,10 @@ function App() {
 
     const init = async () => {
       await createTables();
-      const assignmentsArr = await getPairs();
-      assignmentsArr.map(assignmentsObj => {
-        setQueryArr(q => [...q, assignmentsObj.query]);
-        setReponseArr(r => [...r, assignmentsObj.response]);
+      const messagesArr = await getAllQueries();
+      messagesArr.map(messagesObj => {
+        setQueryArr(q => [...q, messagesObj.query]);
+        setReponseArr(r => [...r, messagesObj.response]);
       })
     };
 

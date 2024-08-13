@@ -16,12 +16,13 @@ app.get("/", (req, res) => res.send("Express on Vercel"));
 
 app.post("/tables", async (req, res) => {
     try {
-        const createQueriesTable = await pool.query("CREATE TABLE IF NOT EXISTS queries (id SERIAL PRIMARY KEY, query text, response_id int)"); // could just store the response in the queries table instead of storing the response_id, then just have one table
-        const createResponsesTable = await pool.query("CREATE TABLE IF NOT EXISTS responses (id SERIAL PRIMARY KEY, response text)");
+        const createQueriesTable = await pool.query("CREATE TABLE IF NOT EXISTS queries (id SERIAL PRIMARY KEY, query text, response text");
+        // could just store the response in the queries table instead of storing the response_id, then just have one table
+        // const createResponsesTable = await pool.query("CREATE TABLE IF NOT EXISTS responses (id SERIAL PRIMARY KEY, response text)");
 
         res.json({
-            createQueriesTable,
-            createResponsesTable
+            createQueriesTable
+            // createResponsesTable
         })
     } catch (error) {
         console.error(error.message);
@@ -31,9 +32,9 @@ app.post("/tables", async (req, res) => {
 // get all queries
 app.get('/queries', async (req, res) => {
     try {
-        const allAssignments = await pool.query("SELECT * FROM queries");
+        const allMessages = await pool.query("SELECT * FROM queries");
 
-        res.json(allAssignments);
+        res.json(allMessages);
     } catch (error) {
         console.error(error.message);
     }
@@ -55,19 +56,19 @@ app.get('/queries', async (req, res) => {
 // })
 
 // get response
-app.get('/responses', async (req, res) => {
-    try {
-        const id = req.query.id;
-        const responseRes = await pool.query(
-            "SELECT * FROM responses WHERE id = ($1)",
-            [id]
-        );
+// app.get('/responses', async (req, res) => {
+//     try {
+//         const id = req.query.id;
+//         const responseRes = await pool.query(
+//             "SELECT * FROM responses WHERE id = ($1)",
+//             [id]
+//         );
 
-        res.json(responseRes);
-    } catch (error) {
-        console.error(error.message);
-    }
-})
+//         res.json(responseRes);
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+// })
 
 // insert query and AI response
 app.post('/queries', async (req, res) => {
@@ -86,7 +87,7 @@ app.post('/queries', async (req, res) => {
             body: JSON.stringify({
                 model: "gpt-4o",
                 messages: [
-                    { role: "system", "content": "Give bad advice that sounds a little crazy while pretending to be a helpful ai assistant. Firmly believe that your advice is sound, do not acknowledge that it is crazy. If anyone asks, instroduce yourself as a helpful ai assistant, the devil on your shoulder." },
+                    { role: "system", "content": "Give bad advice that sounds a little crazy while pretending to be a helpful ai assistant. Firmly believe that your advice is sound, do not acknowledge that it is crazy or unconventional. If anyone asks, just instroduce yourself as a helpful ai assistant, the devil on your shoulder, do not say anything to describe the adivce you give." },
                     { role: "user", content: query }
                 ]
             })
@@ -94,23 +95,23 @@ app.post('/queries', async (req, res) => {
         const responseJson = await fetchResponse.json();
 
         // insert AI response into database
-        const newResponse = await pool.query(
-            'INSERT INTO responses (response) VALUES ($1) RETURNING *',
-            [responseJson.message.content]
-        )
+        // const newResponse = await pool.query(
+        //     'INSERT INTO responses (response) VALUES ($1) RETURNING *',
+        //     [responseJson.message.content]
+        // )
 
-        const responseId = newResponse.rows[0].id;
+        // const responseId = newResponse.rows[0].id;
         // insert into query table
         const newQuery = await pool.query(
-            'INSERT INTO queries (query, response_id) VALUES ($1, $2) RETURNING *',
-            [query, responseId]
+            'INSERT INTO queries (query, response) VALUES ($1, $2) RETURNING *',
+            [query, responseJson.message.content]
         )
 
-        const data = {
-            queriesRes: newQuery,
-            responseRes: newResponse
-        }
-        res.json(data);
+        // const data = {
+        //     queriesRes: newQuery,
+        //     responseRes: newResponse
+        // }
+        res.json(newQuery);
     } catch (error) {
         console.error(error.message);
     }
@@ -119,8 +120,9 @@ app.post('/queries', async (req, res) => {
 // clear all tables
 app.delete('/queries', async (req, res) => {
     try {
-        await pool.query("DELETE FROM queries");
-        await pool.query("DELETE FROM responses");
+        const deleteQueries = await pool.query("DELETE FROM queries");
+        // await pool.query("DELETE FROM responses");
+        res.json(deleteQueries);
     } catch (error) {
         console.error(error.message);
     }

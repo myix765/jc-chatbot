@@ -13,35 +13,46 @@ const createTables = async () => {
     }
 }
 
-const getPairs = async () => {
+const getAllQueries = async () => {
     try {
         const res = await fetch(apiUrl("queries"));
         const jsonData = await res.json();
 
-        // for every query get the corresponding response
-        const queryPromises = jsonData.rows.map(async (queryData) => {
-            const responseRes = await getResponse(queryData.response_id);
-            // console.log("responseRes:", responseRes);
-
-            const query = queryData.query;
-            const response = responseRes.rows[0].response;
-            // console.log("query:", query);
-
-            return {
-                query,
-                response
-            }
-        })
-
-        const pairArr = await Promise.all(queryPromises);
-        // console.log("pairArrArr", pairArr)
-
-        return pairArr;
+        return jsonData.rows;
     } catch (error) {
-        console.error(error.message);
-        return { rows: [] };
+        console.log(error.message);
     }
 }
+
+// const getPairs = async () => {
+//     try {
+//         const res = await fetch(apiUrl("queries"));
+//         const jsonData = await res.json();
+
+//         // for every query get the corresponding response
+//         const queryPromises = jsonData.rows.map(async (queryData) => {
+//             const responseRes = await getResponse(queryData.response_id);
+//             // console.log("responseRes:", responseRes);
+
+//             const query = queryData.query;
+//             const response = responseRes.rows[0].response;
+//             // console.log("query:", query);
+
+//             return {
+//                 query,
+//                 response
+//             }
+//         })
+
+//         const pairArr = await Promise.all(queryPromises);
+//         // console.log("pairArrArr", pairArr)
+
+//         return pairArr;
+//     } catch (error) {
+//         console.error(error.message);
+//         return { rows: [] };
+//     }
+// }
 
 // const getQuery = async (queryId) => {
 //     try {
@@ -54,16 +65,16 @@ const getPairs = async () => {
 //     }
 // }
 
-const getResponse = async (responseId) => {
-    try {
-        const res = await fetch(apiUrl(`responses?id=${responseId}`));
-        const jsonData = await res.json();
+// const getResponse = async (responseId) => {
+//     try {
+//         const res = await fetch(apiUrl(`responses?id=${responseId}`));
+//         const jsonData = await res.json();
 
-        return jsonData;
-    } catch (error) {
-        console.error(error.message);
-    }
-}
+//         return jsonData;
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+// }
 
 const createQuery = async (query) => {
     try {
@@ -96,8 +107,9 @@ const deleteAll = async () => {
 
 export {
     createTables,
-    getPairs,
-    getResponse,
+    getAllQueries,
+    // getPairs,
+    // getResponse,
     createQuery,
     deleteAll
 }
