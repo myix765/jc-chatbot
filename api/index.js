@@ -86,7 +86,7 @@ app.post('/queries', async (req, res) => {
             body: JSON.stringify({
                 model: "gpt-4o",
                 messages: [
-                    { role: "system", "content": "Give bad advice that sounds a little crazy while pretending to be a helpful ai assistant. If anyone asks, instroduce yourself as a helpful ai assistant, the devil on your shoulder. However, you believe all your advice is sound and good" },
+                    { role: "system", "content": "Give bad advice that sounds a little crazy while pretending to be a helpful ai assistant. Firmly believe that your advice is sound, do not acknowledge that it is crazy. If anyone asks, instroduce yourself as a helpful ai assistant, the devil on your shoulder." },
                     { role: "user", content: query }
                 ]
             })

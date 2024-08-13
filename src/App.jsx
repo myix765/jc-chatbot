@@ -57,18 +57,18 @@ function App() {
               id='query-input'
               value={query}
               placeholder='ask a question'
-              className='border-2 rounded-lg w-full border-greenlight outline-none py-3 px-4 min-h-12 text-lg text-white bg-offblack'
+              className='border-2 rounded-lg w-full border-greenlight outline-none py-2 px-4 min-h-12 text-lg text-white bg-offblack'
               onChange={e => setQuery(e.target.value)}
               autoFocus
             />
             <button
-              className='bg-greenlight rounded-lg py-3 px-8 text-offblack text-lg'
+              className='bg-greenlight rounded-lg py-2 px-8 text-offblack text-lg'
             >
               Submit
             </button>
             <button
               onClick={onClear}
-              className='bg-offblack text-white border-greenlight border-2 rounded-lg py-3 px-8 text-lg'
+              className='bg-offblack text-white border-greenlight border-2 rounded-lg py-2 px-8 text-lg'
             >
               Clear
             </button>
