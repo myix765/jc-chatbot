@@ -10,12 +10,11 @@ function App() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (query != "") {    // handle case when query is only whitespace and message height is 0
+    if (query != "") {
       const queryTemp = query;
       setQuery("");
       setQueryArr([...queryArr, queryTemp]);
       const res = await createQuery(queryTemp);
-      // console.log("res response:", res.rows[0].response);
       setReponseArr([...responseArr, res.rows[0].response]);
     }
   }
@@ -27,8 +26,6 @@ function App() {
   }
 
   useEffect(() => {
-    // console.log("useEffect");
-
     const init = async () => {
       await createTables();
       const messagesArr = await getAllQueries();
@@ -43,15 +40,15 @@ function App() {
 
   return (
     <>
-      <div className='flex flex-col items-center w-full h-screen justify-between'>
-        <div className='w-full px-3 pt-4 pb-10 overflow-scroll'>
+      <div className='flex flex-col items-center w-full'>
+        <div className='w-full px-3 pt-4 pb-14 h-[calc(100vh-7rem)] overflow-scroll'>
           <MessageList
             queryArr={queryArr}
             responseArr={responseArr}
           />
         </div>
-        <div className='h-[15%] fixed bottom-10 w-full bg-gradient-to-t from-offblack via-offblack to-transparent'></div>
-        <div className='w-[96%] h-28 px-2 pb-8 pt-4 font-inconsolata z-20'>
+        <div className='h-[18%] fixed bottom-10 w-full bg-gradient-to-t from-offblack via-offblack to-transparent'></div>
+        <div className='w-[96%] fixed bottom-0 h-28 px-2 pb-8 pt-4 font-inconsolata z-20'>
           <form className='bottom-0 flex gap-3' onSubmit={onSubmit} autoComplete='off'>
             <input
               type='text'
