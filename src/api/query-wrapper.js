@@ -78,6 +78,7 @@ const getAllQueries = async () => {
 
 const createQuery = async (query) => {
     try {
+        console.log("query in createQuery:", query);
         const body = { query };
         const res = await fetch(apiUrl("queries"), {
             method: "POST",
@@ -88,7 +89,6 @@ const createQuery = async (query) => {
         });
 
         const jsonData = await res.json();
-        // console.log("createQuery:", jsonData);
         return jsonData;
     } catch (error) {
         console.error(error.message);
