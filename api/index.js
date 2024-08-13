@@ -93,6 +93,7 @@ app.post('/queries', async (req, res) => {
             })
         })
         const responseJson = await fetchResponse.json();
+        console.log("responseJson:", responseJson);
 
         // insert AI response into database
         // const newResponse = await pool.query(
@@ -104,7 +105,7 @@ app.post('/queries', async (req, res) => {
         // insert into query table
         const newQuery = await pool.query(
             'INSERT INTO queries (query, response) VALUES ($1, $2) RETURNING *',
-            [query, responseJson.message.content]
+            [query, responseJson.rows[0].response]
         )
 
         // const data = {
