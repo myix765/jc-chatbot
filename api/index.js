@@ -16,7 +16,7 @@ app.get("/", (req, res) => res.send("Express on Vercel"));
 
 app.post("/tables", async (req, res) => {
     try {
-        const createQueriesTable = await pool.query("CREATE TABLE IF NOT EXISTS queries (id SERIAL PRIMARY KEY, query text, response text");
+        const createQueriesTable = await pool.query("CREATE TABLE IF NOT EXISTS queries (id SERIAL PRIMARY KEY, query text, response text)");
         // could just store the response in the queries table instead of storing the response_id, then just have one table
         // const createResponsesTable = await pool.query("CREATE TABLE IF NOT EXISTS responses (id SERIAL PRIMARY KEY, response text)");
 
