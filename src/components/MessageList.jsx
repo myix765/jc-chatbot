@@ -4,22 +4,23 @@ import PropTypes from 'prop-types';
 
 const MessageList = ({ queryArr, responseArr }) => {
     return (
-        <div className="flex flex-col gap-2 w-full">
-            {queryArr.map((query, id) => {
-                console.log("query:", query);
-                return (
-                    <React.Fragment key={id}>
-                        <MessageBlock
-                            message={query}
-                            isQuery={true}
-                        />
-                        {responseArr[id] && <MessageBlock
-                            message={responseArr[id]}
-                            isQuery={false}
-                        />}
-                    </React.Fragment>
-                )
-            })}
+        <div className="flex flex-col gap-4 w-full">
+            <MessageBlock
+                message={"Hello! I'm your helpful AI assistant, the devil on your shoulder! How can I help you?"}
+                isQuery={false}
+            />
+            {queryArr.map((query, id) => (
+                <React.Fragment key={id}>
+                    <MessageBlock
+                        message={query}
+                        isQuery={true}
+                    />
+                    {responseArr[id] && <MessageBlock
+                        message={responseArr[id]}
+                        isQuery={false}
+                    />}
+                </React.Fragment>
+            ))}
         </div>
     )
 }

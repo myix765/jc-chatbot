@@ -14,19 +14,19 @@ function App() {
       setQueryArr([...queryArr, query]);
       const res = await createQuery(query);
       setReponseArr([...responseArr, res.responseRes.rows[0].response]);
-      console.log("res response:", res.responseRes.rows[0].response);
+      // console.log("res response:", res.responseRes.rows[0].response);
       setQuery("");
     }
   }
 
-  const onDelete = async () => {
+  const onClear = async () => {
     setQueryArr([]);
     setReponseArr([]);
     await deleteAll();
   }
 
   useEffect(() => {
-    console.log("useEffect");
+    // console.log("useEffect");
 
     const init = async () => {
       await createTables();
@@ -35,7 +35,6 @@ function App() {
         setQueryArr(q => [...q, assignmentsObj.query]);
         setReponseArr(r => [...r, assignmentsObj.response]);
       })
-      // setQueryArr(assignmentsArr);
     };
 
     init();
@@ -43,32 +42,37 @@ function App() {
 
   return (
     <>
-      <div>
-        <div className='w-full p-2'>
+      <div className='flex flex-col items-center w-full h-screen justify-between'>
+        <div className='w-full px-3 pt-4 pb-10 overflow-scroll'>
           <MessageList
             queryArr={queryArr}
             responseArr={responseArr}
-            // messageArr={queryArr}
           />
         </div>
-        <div className='fixed bottom-0 w-full px-2 pb-3 pt-2 bg-slate-300'>
-          <form className='w-full bottom-0 flex gap-2' onSubmit={onSubmit}>
+        <div className='h-[15%] fixed bottom-10 w-full bg-gradient-to-t from-offblack via-offblack to-transparent'></div>
+        <div className='w-[96%] h-28 px-2 pb-8 pt-4 font-inconsolata z-20'>
+          <form className='bottom-0 flex gap-3' onSubmit={onSubmit}>
             <input
               type='text'
               id='query-input'
               value={query}
               placeholder='ask a question'
-              className='border-2 rounded-lg border-black w-full outline-none p-1'
+              className='border-2 rounded-lg w-full border-greenlight outline-none py-3 px-4 min-h-12 text-lg text-white bg-offblack'
               onChange={e => setQuery(e.target.value)}
               autoFocus
             />
             <button
-              className='bg-slate-600 rounded-lg py-1 px-3'
+              className='bg-greenlight rounded-lg py-3 px-8 text-offblack text-lg'
             >
               Submit
             </button>
+            <button
+              onClick={onClear}
+              className='bg-offblack text-white border-greenlight border-2 rounded-lg py-3 px-8 text-lg'
+            >
+              Clear
+            </button>
           </form>
-          <button onClick={onDelete}>Clear</button>
         </div>
       </div>
     </>

@@ -21,11 +21,11 @@ const getPairs = async () => {
         // for every query get the corresponding response
         const queryPromises = jsonData.rows.map(async (queryData) => {
             const responseRes = await getResponse(queryData.response_id);
-            console.log("responseRes:", responseRes);
+            // console.log("responseRes:", responseRes);
 
             const query = queryData.query;
             const response = responseRes.rows[0].response;
-            console.log("query:", query);
+            // console.log("query:", query);
 
             return {
                 query,
@@ -34,7 +34,7 @@ const getPairs = async () => {
         })
 
         const pairArr = await Promise.all(queryPromises);
-        console.log("pairArrArr", pairArr)
+        // console.log("pairArrArr", pairArr)
 
         return pairArr;
     } catch (error) {
@@ -77,9 +77,8 @@ const createQuery = async (query) => {
         });
 
         const jsonData = await res.json();
-        console.log("createQuery:", jsonData);
+        // console.log("createQuery:", jsonData);
         return jsonData;
-        // window.location = '/';
     } catch (error) {
         console.error(error.message);
     }
@@ -90,7 +89,6 @@ const deleteAll = async () => {
         await fetch(apiUrl("queries"), {
             method: "DELETE"
         });
-        // window.location = '/'; // not working
     } catch (error) {
         console.error(error.message);
     }

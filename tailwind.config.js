@@ -6,6 +6,9 @@ export default {
       colors: {
         offblack: '#02000C',
         greenlight: '#00FAAE'
+      },
+      fontFamily: {
+        inconsolata: ["Inconsolata", "monospace"]
       }
     },
   },
