@@ -15,8 +15,8 @@ function App() {
       setQuery("");
       setQueryArr([...queryArr, queryTemp]);
       const res = await createQuery(queryTemp);
-      setReponseArr([...responseArr, res.responseRes.rows[0].response]);
-      // console.log("res response:", res.responseRes.rows[0].response);
+      // console.log("res response:", res.rows[0].response);
+      setReponseArr([...responseArr, res.rows[0].response]);
     }
   }
 
