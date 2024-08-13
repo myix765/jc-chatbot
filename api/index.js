@@ -20,10 +20,10 @@ app.post("/tables", async (req, res) => {
         // could just store the response in the queries table instead of storing the response_id, then just have one table
         // const createResponsesTable = await pool.query("CREATE TABLE IF NOT EXISTS responses (id SERIAL PRIMARY KEY, response text)");
 
-        res.json({
+        res.json(
             createQueriesTable
             // createResponsesTable
-        })
+        )
     } catch (error) {
         console.error(error.message);
     }
