@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import MessageBlock from "./MessageBlock";
 import PropTypes from 'prop-types';
 
 const MessageList = ({ queryArr, responseArr }) => {
+    const listEndRef = useRef(null);
+
+    useEffect(() => {
+        listEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [queryArr, responseArr]);
+
     return (
         <div className="flex flex-col gap-4 w-full">
             <MessageBlock
@@ -21,6 +27,7 @@ const MessageList = ({ queryArr, responseArr }) => {
                     />}
                 </React.Fragment>
             ))}
+            <div ref={listEndRef} />
         </div>
     )
 }
