@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import jc_icon from '../assets/jc_green_black.png';
-import jc_devil_icon from '../assets/jc_devil_white.png';
+import jc_icon from '../assets/jc_green_black.webp';
+import jc_devil_icon from '../assets/jc_devil_white.webp';
 
 const MessageBlock = ({ message, isQuery }) => {
     let styleModifier;
