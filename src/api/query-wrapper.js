@@ -26,7 +26,6 @@ const getAllQueries = async () => {
 
 const createQuery = async (query) => {
     try {
-        console.log("query in createQuery:", query);
         const body = { query };
         const res = await fetch(apiUrl("queries"), {
             method: "POST",

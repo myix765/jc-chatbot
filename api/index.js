@@ -45,7 +45,8 @@ app.post('/queries', async (req, res) => {
 
         // get previous messages
         const getPrev = await fetch("/queries");
-        const prevMessages = getPrev.rows.map(messageObj => ({ role: "user", content: messageObj.query }, { role: "assistant", content: messageObj.response}));
+        const getPrevJson = await getPrev.json();
+        const prevMessages = getPrevJson.rows.map(messageObj => ({ role: "user", content: messageObj.query }, { role: "assistant", content: messageObj.response}));
         console.log("prevMessages:", prevMessages);
 
         // get AI response from query
