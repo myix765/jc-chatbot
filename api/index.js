@@ -39,17 +39,16 @@ app.get('/queries', async (req, res) => {
 app.post('/queries', async (req, res) => {
     try {
         const { query } = req.body;
-        console.log("query:", query);
 
         // get JWT
         const loginJwt = await getJwt();
 
         // get previous messages
         const getPrev = await fetch("/queries");
-        const getPrevJson = await getPrev.json();
-        console.log("getPrevJson:", getPrevJson);
-        const prevMessages = getPrevJson.rows.map(messageObj => ({ role: "user", content: messageObj.query }, { role: "assistant", content: messageObj.response}));
-        console.log("prevMessages:", prevMessages);
+        // const getPrevJson = await getPrev.json();
+        // console.log("getPrevJson:", getPrevJson);
+        // const prevMessages = getPrevJson.rows.map(messageObj => ({ role: "user", content: messageObj.query }, { role: "assistant", content: messageObj.response}));
+        // console.log("prevMessages:", prevMessages);
 
         // get AI response from query
         const fetchResponse = await fetch("https://tl-onboarding-project-dxm7krgnwa-uc.a.run.app/prompt", {
