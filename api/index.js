@@ -7,6 +7,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const allQueries = [];
+const allResponses = [];
+
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
@@ -44,7 +47,7 @@ app.post('/queries', async (req, res) => {
         const loginJwt = await getJwt();
 
         // get previous messages
-        const getPrev = await fetch("/queries");
+        // const getPrev = await fetch("/queries");
         // const getPrevJson = await getPrev.json();
         // console.log("getPrevJson:", getPrevJson);
         // const prevMessages = getPrevJson.rows.map(messageObj => ({ role: "user", content: messageObj.query }, { role: "assistant", content: messageObj.response}));
@@ -66,13 +69,15 @@ app.post('/queries', async (req, res) => {
             })
         })
         const responseJson = await fetchResponse.json();
-        console.log("responseJson:", responseJson);
 
         // insert into query table
         const newQuery = await pool.query(
             'INSERT INTO queries (query, response) VALUES ($1, $2) RETURNING *',
             [query, responseJson.message.content]
         )
+
+        allQueries.push(query);
+        allResponses.push(responseJson.message.content);
 
         res.json(newQuery);
     } catch (error) {
