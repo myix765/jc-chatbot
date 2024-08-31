@@ -45,9 +45,10 @@ app.post('/queries', async (req, res) => {
 
         // get previous messages
         const getPrev = await pool.query("SELECT * FROM queries");
-        const getPrevJson = await getPrev.json();
+        console.log("getPrev", getPrev);
+        // const getPrevJson = await getPrev.json();
         // // console.log("getPrevJson:", getPrevJson);
-        const prevMessages = getPrevJson.rows.map(messageObj => ({ role: "user", content: messageObj.query }, { role: "assistant", content: messageObj.response }));
+        // const prevMessages = getPrevJson.rows.map(messageObj => ({ role: "user", content: messageObj.query }, { role: "assistant", content: messageObj.response }));
 
         // get AI response from query
         const fetchResponse = await fetch("https://tl-onboarding-project-dxm7krgnwa-uc.a.run.app/prompt", {
