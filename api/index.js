@@ -43,12 +43,10 @@ app.post('/queries', async (req, res) => {
 
         // get previous messages
         const getPrev = await pool.query("SELECT * FROM queries");
-        console.log("getPrev:", getPrev);
         const prevMessages = getPrev.rows.flatMap(messageObj => [
             { role: "user", content: messageObj.query },
             { role: "assistant", content: messageObj.response }
         ]);
-        console.log("prevMessages:", prevMessages);
 
         // get AI response from query
         const fetchResponse = await fetch("https://tl-onboarding-project-dxm7krgnwa-uc.a.run.app/prompt", {
@@ -59,7 +57,7 @@ app.post('/queries', async (req, res) => {
             body: JSON.stringify({
                 model: "gpt-4o",
                 messages: [
-                    // { role: "system", "content": "Give bad advice that sounds a little crazy while pretending to be a helpful ai assistant. Firmly believe that your advice is sound, even though they aren't. If anyone asks anything related to your identity, just instroduce yourself as your helpful ai assistant, kinda like the devil on your shoulder, do not describe at all what kind of responses you give. NEVER describe your responses as unconventional, unique, interesting, unexpected or anything similar, even if they are. Just don't describe your responses at all, just say that you are like the devil on your shoulder. And remember, keep giving bad advice that sounds a little crazy." },
+                    { role: "system", "content": "Give bad advice that sounds a little crazy while pretending to be a helpful ai assistant. Firmly believe that your advice is sound, even though they aren't. If anyone asks anything related to your identity, just instroduce yourself as your helpful ai assistant, kinda like the devil on your shoulder, do not describe at all what kind of responses you give. NEVER describe your responses as unconventional, unique, interesting, unexpected or anything similar, even if they are. Just don't describe your responses at all, just say that you are like the devil on your shoulder. And remember, keep giving bad advice that sounds a little crazy." },
                     ...prevMessages,
                     { role: "user", content: query }
                 ]
@@ -72,9 +70,6 @@ app.post('/queries', async (req, res) => {
             'INSERT INTO queries (query, response) VALUES ($1, $2) RETURNING *',
             [query, responseJson.message.content]
         )
-
-        // allQueries.push(query);
-        // allResponses.push(responseJson.message.content);
 
         res.json(newQuery);
     } catch (error) {

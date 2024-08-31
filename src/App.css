@@ -1,3 +1,4 @@
 html {
     @apply bg-offblack;
+    scrollbar-color: theme(colors.greenlight) theme(colors.offblack);
 }
