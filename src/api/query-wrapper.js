@@ -9,7 +9,7 @@ const createTables = async () => {
         const jsonData = await res.json();
         return jsonData;
     } catch (error) {
-        console.error(error);
+        console.error(error.message);
     }
 }
 
@@ -20,7 +20,7 @@ const getAllQueries = async () => {
 
         return jsonData.rows;
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
     }
 }
 
